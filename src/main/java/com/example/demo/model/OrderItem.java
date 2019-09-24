@@ -9,8 +9,9 @@ public class OrderItem {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	Order order;
-	Product product;
+	long orderId;
+	
+	long productId;
 	long quantity;
 	double price;
 	double subTotal;
@@ -22,17 +23,12 @@ public class OrderItem {
 		return id;
 	}
 	
-	public void setOrder(Order order) {
-		this.order = order;
+	
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
-	public Order getOrder() {
-		return order;
-	}
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-	public Product getProduct() {
-		return product;
+	public long getProductId() {
+		return productId;
 	}
 	public void setPrice(double price) {
 		this.price = price;

@@ -1,8 +1,11 @@
 package com.example.demo.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@Table(name="purchase_order")
 @Entity
 public class Order {
 	@Id
@@ -13,7 +16,13 @@ public class Order {
 	double totalPrice;
 	String status;
 	long customerId;
-	List<OrderItem> orderItems;
+	
+	@OneToMany(
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<OrderItem> orderItems = new ArrayList();	
+
 	
 	public void setId(long id) {
 		this.id = id;
@@ -43,6 +52,8 @@ public class Order {
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
+	
+	
 	public List<OrderItem> getOrderItems() {
 		return orderItems;
 	}

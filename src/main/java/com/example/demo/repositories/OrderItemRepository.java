@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.demo.model.*;
 
-public interface OrderRepository extends CrudRepository<Order,Long> {
+public interface OrderItemRepository extends CrudRepository<Order,Long> {
 	
 	
 	
