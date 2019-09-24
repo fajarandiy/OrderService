@@ -14,34 +14,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.Order;
-import com.example.demo.model.OrderItem;
-import com.example.demo.repositories.OrderRepository;
+import com.example.demo.model.PurchaseOrder;
+import com.example.demo.model.PurchaseOrderItem;
+import com.example.demo.repositories.PurchaseOrderRepository;
 
-import com.example.demo.repositories.OrderItemRepository;
+import com.example.demo.repositories.PurchaseOrderItemRepository;
 
 @RestController
 @RequestMapping("api")
-public class OrderController {
+public class PurchaseOrderController {
 	
 	@Autowired
-	private OrderRepository repo;
+	private PurchaseOrderRepository repo;
 	
 	@Autowired
-	private OrderItemRepository itemRepo;
+	private PurchaseOrderItemRepository itemRepo;
 	
-	@PostMapping("/order/create")
-	public Long create(@Valid @RequestBody Order obj) {			
+	@PostMapping("/purchaseOrder/create")
+	public Long create(@Valid @RequestBody PurchaseOrder obj) {			
 		repo.save(obj);
 		return obj.getId();
 	}
 
-	@PostMapping("/order/{id}/setItems")
-	public String setOrderItems(@PathVariable(value="id") Long id,@Valid @RequestBody List<OrderItem> orderItems) {	
-		Optional<Order> opt=repo.findById(id);
+	@PostMapping("/purchaseOrder/{id}/setItems")
+	public String setOrderItems(@PathVariable(value="id") Long id,@Valid @RequestBody List<PurchaseOrderItem> orderItems) {	
+		Optional<PurchaseOrder> opt=repo.findById(id);
 		if(opt.isPresent()) {
-			Order order=opt.get();																																																																																																																																																																																																																										
-			order.setOrderItems(orderItems);
+			PurchaseOrder order=opt.get();																																																																																																																																																																																																																										
+			for (PurchaseOrderItem orderItem : orderItems) {
+				orderItem.setOrder(order);
+				itemRepo.save(orderItem);
+			}
 		
 			repo.save(order);
 			return order.getTxNumber();
@@ -49,7 +52,7 @@ public class OrderController {
 	}
 	
 	/*	
-	@PostMapping("/order/{id}/checkOut")
+	@PostMapping("/purchaseOrder/{id}/checkOut")
 	public String addItem(@PathVariable(value="id") Long id,@Valid @RequestBody List<OrderItem> orderItems) {	
 		Optional<Order> opt=repo.findById(id);
 		if(opt.isPresent()) {
@@ -61,38 +64,38 @@ public class OrderController {
 		
 	}*/
 	
-	@GetMapping("/order/getAll")
-	public Iterable<Order> findAll() {			
+	@GetMapping("/purchaseOrder/getAll")
+	public Iterable<PurchaseOrder> findAll() {			
 		return repo.findAll();
 	}
 	
-	@GetMapping("/order/{id}")
-	public Optional<Order> findById(@PathVariable(value="id") Long id) {			
+	@GetMapping("/purchaseOrder/{id}")
+	public Optional<PurchaseOrder> findById(@PathVariable(value="id") Long id) {			
 		return repo.findById(id);
 	}
 	
-	@PostMapping("/order/delete/{id}")
+	@PostMapping("/purchaseOrder/delete/{id}")
 	public Boolean delete(@PathVariable(value="id") Long id) {
 		repo.deleteById(id);
 		return true;
 	}
 	
 	/*
-	@GetMapping("/order/email/{email}")
+	@GetMapping("/purchaseOrder/email/{email}")
 	public Iterable<Order> findByEmail(@PathVariable(value="email") String email) {			
 		return repo.findByEmail2(email);
 	}
-	@GetMapping("/order/address/{address}")
+	@GetMapping("/purchaseOrder/address/{address}")
 	public Iterable<Order> findByAddress(@PathVariable(value="address") String address) {			
 		return repo.findByAddress(address);
 	}
 	
-	@GetMapping("/order/all/{param}")
+	@GetMapping("/purchaseOrder/all/{param}")
 	public Iterable<Order> findByAddressOrEmail(@PathVariable(value="param") String param) {			
 		return repo.findByAddressOrEmail(param);
 	}
 	
-	@PostMapping("/order/all")
+	@PostMapping("/purchaseOrder/all")
 	public Iterable<Order> findByAddressAndEmail(@Valid @RequestBody Map dataMap) {			
 		return repo.findByAddressAndEmail((String)dataMap.get("email"),(String) dataMap.get("address"));
 	}

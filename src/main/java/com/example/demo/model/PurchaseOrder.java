@@ -7,7 +7,7 @@ import java.util.List;
 
 @Table(name="purchase_order")
 @Entity
-public class Order {
+public class PurchaseOrder {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -17,11 +17,8 @@ public class Order {
 	String status;
 	long customerId;
 	
-	@OneToMany(
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<OrderItem> orderItems = new ArrayList();	
+//	@OneToMany(mappedBy = "order")
+//    private List<PurchaseOrderItem> orderItems = new ArrayList();	
 
 	
 	public void setId(long id) {
@@ -49,13 +46,13 @@ public class Order {
 		return customerId;
 	}
 
-	public void setOrderItems(List<OrderItem> orderItems) {
+/*	public void setOrderItems(List<PurchaseOrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
 	
 	
-	public List<OrderItem> getOrderItems() {
+	public List<PurchaseOrderItem> getOrderItems() {
 		return orderItems;
 	}
-	
+	*/
 }

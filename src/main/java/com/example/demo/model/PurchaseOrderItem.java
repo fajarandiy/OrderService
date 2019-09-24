@@ -2,14 +2,23 @@ package com.example.demo.model;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
-public class OrderItem {
+public class PurchaseOrderItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
-	long orderId;
+	@ManyToOne(fetch = FetchType.LAZY,optional=false)
+    @JoinColumn(name = "purchaseOrder_id",nullable=false)
+	@OnDelete(action= OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private PurchaseOrder order;
 	
 	long productId;
 	long quantity;
@@ -23,6 +32,12 @@ public class OrderItem {
 		return id;
 	}
 	
+	public void setOrder(PurchaseOrder order) {
+		this.order = order;
+	}
+	public PurchaseOrder getOrder() {
+		return order;
+	}
 	
 	public void setProductId(Long productId) {
 		this.productId = productId;
