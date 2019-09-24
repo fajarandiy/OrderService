@@ -8,6 +8,10 @@ import com.example.demo.model.*;
 
 public interface OrderRepository extends CrudRepository<Order,Integer> {
 	
+	
+	
+	
+	
 	@Query("Select c from Order c where c.email like concat('%',:email,'%')")
 	Iterable<Order> findByEmail(@Param("email") String email);
 	
